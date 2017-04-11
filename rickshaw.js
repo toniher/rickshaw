@@ -1504,6 +1504,9 @@ Rickshaw.Graph.Axis.X = function(args) {
 
 		this.tickSize = args.tickSize || 4;
 		this.ticksTreatment = args.ticksTreatment || 'plain';
+		this.tickRotation = args.tickRotation || 0;
+		this.tickOffsetX = args.tickOffsetX || 0;
+		this.tickOffsetY = args.tickOffsetY || 0;
 
 		if (args.element) {
 
@@ -1569,11 +1572,15 @@ Rickshaw.Graph.Axis.X = function(args) {
 			this.vis.selectAll('*').remove();
 		}
 
+        var relative_transform = "rotate("+this.tickRotation+") translate("+this.tickOffsetX+","+this.tickOffsetY+")";
 		this.vis
 			.append("svg:g")
 			.attr("class", ["x_ticks_d3", this.ticksTreatment].join(" "))
 			.attr("transform", transform)
-			.call(axis.ticks(this.ticks).tickSubdivide(0).tickSize(this.tickSize));
+			.call(axis.ticks(this.ticks).tickSubdivide(0).tickSize(this.tickSize))
+            .selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("transform", relative_transform);
 
 		var gridSize = (this.orientation == 'bottom' ? 1 : -1) * this.graph.height;
 
@@ -1623,6 +1630,9 @@ Rickshaw.Graph.Axis.Y = Rickshaw.Class.create( {
 		this.ticksTreatment = args.ticksTreatment || 'plain';
 
 		this.tickFormat = args.tickFormat || function(y) { return y };
+		this.tickRotation = args.tickRotation || 0;
+		this.tickOffsetX = args.tickOffsetX || 0;
+		this.tickOffsetY = args.tickOffsetY || 0;
 
 		this.berthRate = 0.10;
 
@@ -1703,11 +1713,15 @@ Rickshaw.Graph.Axis.Y = Rickshaw.Class.create( {
 			this.vis.selectAll('*').remove();
 		}
 
+        var relative_transform = "rotate("+this.tickRotation+") translate("+this.tickOffsetX+","+this.tickOffsetY+")";
 		this.vis
 			.append("svg:g")
 			.attr("class", ["y_ticks", this.ticksTreatment].join(" "))
 			.attr("transform", transform)
-			.call(axis.ticks(this.ticks).tickSubdivide(0).tickSize(this.tickSize));
+			.call(axis.ticks(this.ticks).tickSubdivide(0).tickSize(this.tickSize))
+            .selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("transform", relative_transform);
 
 		return axis;
 	},
@@ -3811,7 +3825,16 @@ Rickshaw.Graph.Renderer.LinePlot = Rickshaw.Class.create( Rickshaw.Graph.Rendere
 	}
 } );
 
-Rickshaw.namespace('Rickshaw.Graph.Smoother');
+Rickshaw.namespace('Rickshaw.Graph.Renderer.DottedLine');
+
+Rickshaw.Graph.Renderer.DottedLine = Rickshaw.Class.create( Rickshaw.Graph.Renderer.Line, {
+    name: 'dotted_line',
+    _styleSeries: function(series) {
+        var result = Rickshaw.Graph.Renderer.Line.prototype._styleSeries.call(this, series);
+        d3.select(series.path).style("stroke-dasharray", '5, 2');
+        return result;
+    }
+});Rickshaw.namespace('Rickshaw.Graph.Smoother');
 
 Rickshaw.Graph.Smoother = Rickshaw.Class.create({
 
