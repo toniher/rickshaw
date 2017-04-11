@@ -1,10 +1,11 @@
+var d3 = require("d3");
 var Rickshaw = require("../rickshaw");
 
 exports.setUp = function(callback) {
 
 	Rickshaw = require('../rickshaw');
 
-	global.document = d3.select('html')[0][0].parentNode;
+	global.document = require("jsdom").jsdom("<html><head></head><body></body></html>");
 	global.window = document.defaultView;
 
 	new Rickshaw.Compat.ClassList();
@@ -157,7 +158,8 @@ exports.respectStrokeFactory = function(test) {
 	
 	var path = graph.vis.select('path.path.fnord');
 	test.equals(path.size(), 1, "we have a fnord path");
-	
+	test.equals(path[0][0].getAttribute('opacity'), 1, 'default opacity');
+
 	var stroke = graph.vis.select('path.stroke.fnord');
 	test.equals(stroke.size(), 1, "we have a fnord stroke");
 	

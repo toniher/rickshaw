@@ -1,3 +1,4 @@
+var d3 = require("d3");
 var fs = require('fs');
 var Rickshaw;
 
@@ -5,7 +6,7 @@ exports.setUp = function(callback) {
 
 	Rickshaw = require('../rickshaw');
 
-	global.document = d3.select('html')[0][0].parentNode;
+	global.document = require("jsdom").jsdom("<html><head></head><body></body></html>");
 	global.window = document.defaultView;
 
 	new Rickshaw.Compat.ClassList();
@@ -34,10 +35,15 @@ exports.svg = function(test) {
 				{ x: 0, y: 40 },
 				{ x: 1, y: 49 },
 				{ x: 2, y: 38 },
-				{ x: 3, y: 30 },
-				{ x: 4, y: 32 } ]
-			}]
-	} );
+				{ x: 3, y: 30 }
+			],
+			strokeWidth: 5,
+			opacity: 0.8
+		}, {
+			color : 'blue',
+			data  : [ { x: 4, y: 32 } ]
+		}]
+	});
 
 	graph.renderer.dotSize = 6;
 	graph.render();
@@ -156,7 +162,7 @@ exports.scales = function(test) {
 	var yTicks = el.getElementsByClassName('y_ticks')[0].getElementsByTagName('g');
 	test.equal(yTicks[0].getAttribute('transform'), 'translate(0,500)');
 	test.equal(yTicks[1].getAttribute('transform'), 'translate(0,275.24400874015976)');
-	test.equal(yTicks[2].getAttribute('transform'), 'translate(0,182.14702893572513)');
+	test.equal(yTicks[2].getAttribute('transform'), 'translate(0,182.14702893572516)');
 
 	// should make a copy mutable object
 	scale.range([0, 960]);
