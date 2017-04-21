@@ -92,6 +92,12 @@ Rickshaw.Graph.Renderer.Area = Rickshaw.Class.create( Rickshaw.Graph.Renderer, {
 				.attr('stroke', series.stroke || d3.interpolateRgb(series.color, 'black')(0.125))
 				.attr('stroke-width', this.strokeWidth);
 		}
+		
+		var opacity = series.opacity ? series.opacity : this.opacity;
+		if ( opacity ) {
+			d3.select(series.path).select('.area')
+				.attr('fill-opacity', opacity );
+		}
 
 		if (series.className) {
 			series.path.setAttribute('class', series.className);
