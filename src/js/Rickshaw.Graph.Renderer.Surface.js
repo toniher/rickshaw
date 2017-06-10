@@ -19,8 +19,8 @@ Rickshaw.Graph.Renderer.Area = Rickshaw.Class.create( Rickshaw.Graph.Renderer.Ar
 
 		var factory = d3.svg.area()
 			.x( function(d) { return graph.x(d.x) } )
-			.y0( function(d) { var base = d.ybase ? d.ybase : d.y0; return graph.y( base ) } )
-			.y1( function(d) { var plus = d.ybase ? d.y + d.ybase : d.y + d.y0; return graph.y( plus ) } )
+			.y0( function(d) { var base = d.ybase ? d.ybase : 0; return graph.y( base ) } )
+			.y1( function(d) { var plus = d.ybase ? d.y + d.ybase : d.y; return graph.y( plus ) } )
 			.interpolate(graph.interpolation).tension(this.tension);
 
 		factory.defined && factory.defined( function(d) { return d.y !== null } );
@@ -33,7 +33,7 @@ Rickshaw.Graph.Renderer.Area = Rickshaw.Class.create( Rickshaw.Graph.Renderer.Ar
 
 		var factory = d3.svg.line()
 			.x( function(d) { return graph.x(d.x) } )
-			.y( function(d) { var plus = d.ybase ? d.y + d.ybase : d.y + d.y0; return graph.y( plus ) } )
+			.y( function(d) { var plus = d.ybase ? d.y + d.ybase : d.y; return graph.y( plus ) } )
 			.interpolate(graph.interpolation).tension(this.tension);
 
 		factory.defined && factory.defined( function(d) { return d.y !== null } );
