@@ -15,7 +15,7 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 		};
 
 		var element = this.element = document.createElement('div');
-		element.className = 'detail';
+		element.className = 'detail inactive';
 
 		this.visible = true;
 		graph.element.appendChild(element);
@@ -45,8 +45,9 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 
 		var graph = this.graph;
 
-		var eventX = e.offsetX || e.layerX;
-		var eventY = e.offsetY || e.layerY;
+		var rect = graph.element.getBoundingClientRect();
+		var eventX = e.clientX - rect.left;
+		var eventY = e.clientY - rect.top;
 
 		var j = 0;
 		var points = [];

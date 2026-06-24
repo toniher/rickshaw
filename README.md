@@ -1,10 +1,46 @@
 [![NPM version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
+[![Build Status][github-actions-image]][github-actions-url]
 [![Coverage Status][coverage-image]][coverage-url]
 
 # Rickshaw
 
 Rickshaw is a JavaScript toolkit for creating interactive time series graphs, developed at [Shutterstock](http://www.shutterstock.com)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Install](#install)
+  - [Dependencies](#dependencies)
+- [Rickshaw.Graph](#rickshawgraph)
+      - [element](#element)
+      - [series](#series)
+      - [renderer](#renderer)
+      - [width](#width)
+      - [height](#height)
+      - [min](#min)
+      - [max](#max)
+      - [padding](#padding)
+      - [interpolation](#interpolation)
+      - [stack](#stack)
+  - [Methods](#methods)
+      - [render()](#render)
+      - [configure()](#configure)
+      - [onUpdate(f)](#onupdatef)
+- [Extensions](#extensions)
+- [Rickshaw.Color.Palette](#rickshawcolorpalette)
+    - [Color Schemes](#color-schemes)
+    - [Interpolation](#interpolation)
+- [Rickshaw and Cross-Browser Support](#rickshaw-and-cross-browser-support)
+- [Minification](#minification)
+- [Development](#development)
+- [Contributing](#contributing)
+- [Authors](#authors)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## Getting Started
 
@@ -26,15 +62,35 @@ var graph = new Rickshaw.Graph( {
 
 graph.render();
 ```
-See the [overview](http://code.shutterstock.com/rickshaw/), [tutorial](http://shutterstock.github.com/rickshaw/tutorial/introduction.html), and [examples](http://shutterstock.github.com/rickshaw/examples/) for more.
+See the [overview](https://shutterstock.github.io/rickshaw/), [tutorial](http://shutterstock.github.com/rickshaw/tutorial/introduction.html), and [examples](http://shutterstock.github.com/rickshaw/examples/) for more.
 
-## Rickshaw.Graph 
+## Install
+
+In the browser, manually add `rickshaw.min.js` and `rickshaw.min.css` in the document head.
+
+Alternatively, you can install Rickshaw using [Bower](https://bower.io/) or [npm](https://npmjs.com).
+
+```sh
+# With bower
+bower install rickshaw
+# With npm
+npm install --save rickshaw
+```
+
+### Dependencies
+
+Rickshaw relies on the fantastic [D3 visualization library](http://mbostock.github.com/d3/) to do lots of the heavy lifting for stacking and rendering to SVG.
+
+Some extensions require [jQuery](http://jquery.com) and [jQuery UI](http://jqueryui.com), but for drawing some basic graphs you'll be okay without.
+
+
+## Rickshaw.Graph
 
 A Rickshaw graph.  Send an `element` reference, `series` data, and optionally other properties to the constructor before calling `render()` to point the graph.  A listing of properties follows.  Send these as arguments to the constructor, and optionally set them later on already-instantiated graphs with a call to `configure()`
 
 ##### element
 
-A reference to an HTML element that should hold the graph. 
+A reference to an HTML element that should hold the graph.
 
 ##### series
 
@@ -42,7 +98,7 @@ Array of objects containing series data to plot.  Each object should contain `da
 
 ##### renderer
 
-A string containing the name of the renderer to be used.  Options include `area`, `stack`, `bar`, `line`, and `scatterplot`.  Also see the `multi` meta renderer in order to support different renderers per series.
+A string containing the name of the renderer to be used.  Options include `area`, `stack`, `bar`, `line`, and `scatterplot`.  Defaults to `line`. Also see the `multi` meta renderer in order to support different renderers per series.
 
 ##### width
 
@@ -96,7 +152,7 @@ Add a callback to run when the graph is rendered
 
 ## Extensions
 
-Once you have a basic graph, extensions let you add functionality.  See the [overview](http://code.shutterstock.com/rickshaw/) and [examples](http://shutterstock.github.com/rickshaw/examples/) listing for more.
+Once you have a basic graph, extensions let you add functionality.  See the [overview](https://shutterstock.github.io/rickshaw/) and [examples](http://shutterstock.github.com/rickshaw/examples/) listing for more.
 
 * __Rickshaw.Graph.Legend__ - add a basic legend
 
@@ -131,7 +187,7 @@ Rickshaw comes with a few color schemes. Instantiate a palette and specify a sch
 
 ```javascript
 var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum2001' } );
-    
+
 palette.color() // => first color in the palette
 palette.color() // => next color in the palette...
 ```
@@ -140,7 +196,7 @@ Optionally, to palette.color() can take a numeric argument to specify which colo
 
 ```javascript
 var palette = new Rickshaw.Color.Palette( { scheme: 'colorwheel' } );
-    
+
 palette.color(0) // => first color in the palette - red in this example
 palette.color(2) // => third color in the palette - light blue
 ```
@@ -163,30 +219,17 @@ For graphs with more series than palettes have colors, specify an `interpolatedS
 
 This library works in modern browsers and Internet Explorer 9+.
 
-Rickshaw relies on the HTMLElement#classList API, which isn't natively supported in Internet Explorer 9.  Rickshaw adds support by including a shim which implements the classList API by extending the HTMLElement prototype.  You can disable this behavior if you like, by setting `RICKSHAW_NO_COMPAT` to a true value before including the library. 
+Rickshaw relies on the HTMLElement#classList API, which isn't natively supported in Internet Explorer 9.  Rickshaw adds support by including a shim which implements the classList API by extending the HTMLElement prototype.  You can disable this behavior if you like, by setting `RICKSHAW_NO_COMPAT` to a true value before including the library.
 
+## Minification
 
-## Dependencies
-
-Rickshaw relies on the fantastic [D3 visualization library](http://mbostock.github.com/d3/) to do lots of the heavy lifting for stacking and rendering to SVG.
-
-Some extensions require [jQuery](http://jquery.com) and [jQuery UI](http://jqueryui.com), but for drawing some basic graphs you'll be okay without.
-
-Rickshaw uses [jsdom](https://github.com/tmpvar/jsdom) to run unit tests in Node to be able to do SVG manipulation. As of the jsdom 7.0.0 release, jsdom requires Node.js 4 or newer [jsdom changelog](https://github.com/tmpvar/jsdom/blob/master/Changelog.md#700). If you want to run the tests on your machine, and you don't have access to a version of node >= 4.0, you can `npm install jsdom@3`  so that you can run the tests using the [3.x branch of jsdom](https://github.com/tmpvar/jsdom/tree/3.x).
-
-## Building
-
-For building, we need [Node](http://nodejs.org) and [npm](http://npmjs.org).  Running `make` should get you going with any luck.
-
-After doing a build you can run the tests with the command: `npm test`
-
-If you'd like to do your own minification, you will need to give a hint to the minifier to leave variables named `$super` named `$super`.  For example, with uglify on the command line:
+If your project uses minification, you will need to give a hint to the minifier to leave variables named `$super` named `$super`.  For example, with uglify on the command line:
 
 ```
 $ uglify-js --reserved-names "$super" rickshaw.js > rickshaw.min.js
 ```
 
-Or a sample configuration with `grunt-contrib-uglify`: 
+Or a sample configuration with `grunt-contrib-uglify`:
 
 ```javascript
 uglify: {
@@ -195,6 +238,15 @@ uglify: {
   }
 }
 ```
+
+## Development
+
+For building, we use [Node](http://nodejs.org) and [npm](http://npmjs.org). Running `npm run build` or `make` should get you going with any luck.
+
+After doing a build you can run the tests with the command: `npm test`
+
+For more available options see the [package.json](package.json) scripts section.
+
 
 ## Contributing
 
@@ -205,6 +257,8 @@ Pull requests are always welcome!  Please follow a few guidelines:
 - Do as the Romans do and stick with existing whitespace and formatting conventions (i.e., tabs instead of spaces, etc)
 - Consider adding a simple example under `examples/` that demonstrates any new functionality
 
+Please note that all interactions with Shutterstock follow the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Authors
 
 This library was developed by David Chester, Douglas Hunter, and Silas Sewell at [Shutterstock](http://www.shutterstock.com)
@@ -212,7 +266,7 @@ This library was developed by David Chester, Douglas Hunter, and Silas Sewell at
 
 ## License
 
-Copyright (C) 2011-2013 by Shutterstock Images, LLC
+Copyright (C) 2011-2024 by Shutterstock Images, LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -222,7 +276,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 [npm-image]: https://img.shields.io/npm/v/rickshaw.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/rickshaw
-[travis-image]: https://travis-ci.org/shutterstock/rickshaw.svg?branch=master
-[travis-url]: https://travis-ci.org/shutterstock/rickshaw
-[coverage-image]: https://coveralls.io/repos/github/shutterstock/rickshaw/badge.svg?branch=feature%2Ftest-coverage
-[coverage-url]: https://coveralls.io/github/shutterstock/rickshaw?branch=feature%2Ftest-coverage
+[github-actions-image]: https://github.com/shutterstock/rickshaw/actions/workflows/ci.yaml/badge.svg
+[github-actions-url]: https://github.com/shutterstock/rickshaw/actions/workflows/ci.yaml
+[coverage-image]: https://coveralls.io/repos/github/shutterstock/rickshaw/badge.svg?branch=main
+[coverage-url]: https://coveralls.io/github/shutterstock/rickshaw

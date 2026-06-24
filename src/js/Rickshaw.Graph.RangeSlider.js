@@ -25,9 +25,11 @@ Rickshaw.Graph.RangeSlider = Rickshaw.Class.create({
 				self.update();
 			}.bind(self));
 
-			graphs[i].onConfigure(function() {
-				$(element)[0].style.width = graphs[i].width + 'px';
-			}.bind(self));
+			(function(idx){
+				graphs[idx].onConfigure(function() {
+					$(this.element)[0].style.width = graphs[idx].width + 'px';
+				}.bind(self));
+			})(i);
 		}
 
 	},
@@ -81,7 +83,7 @@ Rickshaw.Graph.RangeSlider = Rickshaw.Class.create({
 		} );
 
 		graphs[0].onConfigure(function() {
-			$(element)[0].style.width = graphs[0].width + 'px';
+			$(this.element)[0].style.width = graphs[0].width + 'px';
 		}.bind(this));
 
 	},

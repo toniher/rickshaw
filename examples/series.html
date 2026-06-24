@@ -6,7 +6,7 @@
 	<link type="text/css" rel="stylesheet" href="../src/css/legend.css">
 	<link type="text/css" rel="stylesheet" href="css/extensions.css">
 
-	<script src="../vendor/d3.v3.js"></script>
+	<script src="../node_modules/d3/d3.min.js"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
@@ -80,7 +80,7 @@ var graph = new Rickshaw.Graph( {
 
 var slider = new Rickshaw.Graph.RangeSlider( {
 	graph: graph,
-	element: $('#slider')
+	element: document.getElementById('slider')
 } );
 
 var hoverDetail = new Rickshaw.Graph.HoverDetail( {
@@ -160,6 +160,17 @@ setInterval( function() {
 	graph.series.addData(data);
 	graph.update();
 }, tv );
+
+var resize = function() {
+  graph.configure({
+    width: window.innerWidth * 0.75,
+    height: window.innerHeight * 0.75
+  });
+  graph.render();
+}
+
+window.addEventListener('resize', resize);
+resize();
 
 </script>
 
